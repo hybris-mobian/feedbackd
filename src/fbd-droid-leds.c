@@ -163,5 +163,8 @@ fbd_dev_leds_stop (FbdDevLeds *self, FbdFeedbackLedColor color)
   	notification_state.brightnessMode = 0;
 
   	self->notifications->set_light(self->notifications, &notification_state);
+
+    g_debug ("fbd_dev_leds_stop done.");
+
     return TRUE;
 }
