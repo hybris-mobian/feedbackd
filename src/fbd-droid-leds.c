@@ -137,14 +137,14 @@ fbd_dev_leds_start_periodic (FbdDevLeds *self, FbdFeedbackLedColor color,
 
     /* turn on droid leds */
 
-	  memset(&notification_state, 0, sizeof(struct light_state_t));
-	  notification_state.color = color;
-	  notification_state.flashMode = LIGHT_FLASH_TIMED;
-	  notification_state.flashOnMS = t;
-	  notification_state.flashOffMS = t;
-  	notification_state.brightnessMode = BRIGHTNESS_MODE_USER;
+    memset(&notification_state, 0, sizeof(struct light_state_t));
+    notification_state.color = color;
+    notification_state.flashMode = LIGHT_FLASH_TIMED;
+    notification_state.flashOnMS = t;
+    notification_state.flashOffMS = t;
+    notification_state.brightnessMode = BRIGHTNESS_MODE_USER;
 
-  	self->notifications->set_light(self->notifications, &notification_state);
+    self->notifications->set_light(self->notifications, &notification_state);
 
     return TRUE;
 }
@@ -156,13 +156,15 @@ fbd_dev_leds_stop (FbdDevLeds *self, FbdFeedbackLedColor color)
 
     /* turn off droid leds */
     memset(&notification_state, 0, sizeof(struct light_state_t));
-  	notification_state.color = 0x00000000;
-  	notification_state.flashMode = LIGHT_FLASH_NONE;
-  	notification_state.flashOnMS = 0;
-  	notification_state.flashOffMS = 0;
-  	notification_state.brightnessMode = 0;
+    notification_state.color = color;
+    notification_state.flashMode = LIGHT_FLASH_NONE;
+    notification_state.flashOnMS = 0;
+    notification_state.flashOffMS = 0;
+    notification_state.brightnessMode = BRIGHTNESS_MODE_USER;
 
-  	self->notifications->set_light(self->notifications, &notification_state);
+    if (self->notifications->set_light(self->notifications, &notification_state) != 0){
+      g_debug("Failed to turn the light off");
+    }
 
     g_debug ("fbd_dev_leds_stop done.");
 
